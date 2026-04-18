@@ -69,8 +69,9 @@
         </div>
       </div>
 
-      <!-- Right: GHL Form embed -->
+      <!-- Right: GHL Form embed (lazy-loaded to avoid third-party cookies on initial load) -->
       <div
+        id="ghl-form-wrapper"
         class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
         data-reveal
         data-reveal-delay="2"
@@ -79,27 +80,40 @@
           <h3 class="text-white font-bold text-xl">Get a Free Quote</h3>
           <p class="text-white/60 text-sm mt-1">We respond same business day</p>
         </div>
-        <div style="height: 660px; position: relative;">
-          <iframe
-            src="https://link.cicon.ca/widget/form/KtVDWCVcntC9jy3SWCqa"
-            style="width:100%;height:100%;border:none;border-radius:0px"
-            id="inline-KtVDWCVcntC9jy3SWCqa"
-            data-layout='{"id":"INLINE"}'
-            data-trigger-type="alwaysShow"
-            data-trigger-value=""
-            data-activation-type="alwaysActivated"
-            data-activation-value=""
-            data-deactivation-type="neverDeactivate"
-            data-deactivation-value=""
-            data-form-name="Get a Free Quote"
-            data-height="634"
-            data-layout-iframe-id="inline-KtVDWCVcntC9jy3SWCqa"
-            data-form-id="KtVDWCVcntC9jy3SWCqa"
-            title="Get a Free Quote"
-          ></iframe>
-          <script src="https://link.cicon.ca/js/form_embed.js" is:inline></script>
+        <div id="ghl-form-slot" style="height: 660px; position: relative;">
+          <!-- iframe injected by IntersectionObserver when section enters viewport -->
         </div>
       </div>
+
+      <script is:inline>
+        (function () {
+          const slot = document.getElementById('ghl-form-slot');
+          if (!slot) return;
+          const observer = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+              observer.disconnect();
+              const iframe = document.createElement('iframe');
+              iframe.src = 'https://link.cicon.ca/widget/form/KtVDWCVcntC9jy3SWCqa';
+              iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:0px';
+              iframe.id = 'inline-KtVDWCVcntC9jy3SWCqa';
+              iframe.setAttribute('data-layout', '{"id":"INLINE"}');
+              iframe.setAttribute('data-trigger-type', 'alwaysShow');
+              iframe.setAttribute('data-activation-type', 'alwaysActivated');
+              iframe.setAttribute('data-deactivation-type', 'neverDeactivate');
+              iframe.setAttribute('data-form-name', 'Get a Free Quote');
+              iframe.setAttribute('data-height', '634');
+              iframe.setAttribute('data-layout-iframe-id', 'inline-KtVDWCVcntC9jy3SWCqa');
+              iframe.setAttribute('data-form-id', 'KtVDWCVcntC9jy3SWCqa');
+              iframe.title = 'Get a Free Quote';
+              slot.appendChild(iframe);
+              var s = document.createElement('script');
+              s.src = 'https://link.cicon.ca/js/form_embed.js';
+              document.body.appendChild(s);
+            }
+          }, { rootMargin: '200px' });
+          observer.observe(document.getElementById('ghl-form-wrapper'));
+        })();
+      </script>
     </div>
   </div>
 </section>
