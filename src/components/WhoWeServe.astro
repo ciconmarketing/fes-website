@@ -1,0 +1,60 @@
+---
+import { siteData } from '../lib/data';
+const { whoWeServe } = siteData;
+---
+
+<section id="who-we-serve" class="py-24 bg-brand-navy relative overflow-hidden">
+  <!-- Background texture -->
+  <div class="absolute inset-0 opacity-5">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-16" data-reveal>
+      <span class="section-tag">Who we serve</span>
+      <h2 class="section-heading-white mb-4">
+        From Solo Sparky to<br/>Large Commercial Projects
+      </h2>
+      <p class="text-white/60 text-lg max-w-2xl mx-auto">
+        Whether you're an apprentice on your first service call or a GC managing a multi-phase commercial build,
+        we've got what you need and the staff who knows how to get it to you.
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {whoWeServe.map((group, i) => (
+        <div
+          class="border border-white/10 rounded-2xl p-8 hover:bg-white/5 hover:border-brand-orange/40 transition-all duration-300 group cursor-default"
+          data-reveal
+          data-reveal-delay={String((i % 3) + 1)}
+        >
+          <div class="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center mb-5 group-hover:bg-brand-orange/20 transition-colors">
+            <svg class="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-white font-bold text-xl mb-3 group-hover:text-brand-orange transition-colors">{group.title}</h3>
+          <p class="text-white/55 leading-relaxed">{group.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Call to action -->
+    <div class="mt-16 text-center" data-reveal>
+      <p class="text-white/60 mb-6 text-lg">Ready to open a trade account?</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="#quote" class="btn-primary">Open a Trade Account</a>
+        <a href="mailto:info@firstelectricalsupply.com" class="btn-outline">Email Our Team</a>
+      </div>
+    </div>
+  </div>
+</section>

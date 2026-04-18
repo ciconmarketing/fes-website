@@ -1,0 +1,89 @@
+---
+---
+
+<section class="py-24 bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left: content -->
+      <div data-reveal>
+        <span class="section-tag">What we do</span>
+        <h2 class="section-heading mb-6">
+          Everything Electrical.<br/>
+          <span class="text-brand-orange">One Reliable Source.</span>
+        </h2>
+        <p class="text-lg text-gray-500 leading-relaxed mb-8">
+          From the rough-in to the finish — wire, panels, conduit, lighting, controls, tools — we stock what
+          the GTA's electrical trades actually need, not what looks good on a product sheet.
+        </p>
+        <ul class="space-y-4 mb-10">
+          {[
+            'Electrical distribution & switchgear',
+            'Wire, cable & conduit systems',
+            'Lighting: LED, emergency, landscape, controls',
+            'Security cameras, NVR/DVR, CCTV accessories',
+            'Wiring devices, plugs, motion sensors',
+            'HVAC, fans, heat pumps, snow melt',
+            'Tools, PPE & job site accessories',
+            'Low voltage A/V, speakers, data accessories',
+          ].map(item => (
+            <li class="flex items-start gap-3 text-gray-600">
+              <span class="mt-1 w-5 h-5 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0">
+                <svg class="w-3 h-3 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <a href="#products" class="btn-navy">
+          Browse All Categories
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Right: visual grid -->
+      <div class="grid grid-cols-2 gap-4" data-reveal data-reveal-delay="2">
+        <!-- Stat cards overlaid on a visual -->
+        <div class="col-span-2 bg-brand-navy rounded-2xl p-8 text-white relative overflow-hidden">
+          <div class="absolute inset-0 opacity-10">
+            <svg viewBox="0 0 400 200" class="w-full h-full">
+              <line x1="0" y1="0" x2="400" y2="200" stroke="white" stroke-width="1" opacity="0.3"/>
+              <line x1="100" y1="0" x2="400" y2="300" stroke="white" stroke-width="1" opacity="0.2"/>
+              <circle cx="200" cy="100" r="80" stroke="white" stroke-width="1" fill="none" opacity="0.2"/>
+              <circle cx="350" cy="50" r="40" stroke="white" stroke-width="1" fill="none" opacity="0.15"/>
+            </svg>
+          </div>
+          <div class="relative z-10">
+            <div class="text-5xl font-black text-brand-orange mb-2 count-num" data-count-to="11" data-suffix="" data-decimals="0" data-delay="0">0</div>
+            <div class="text-xl font-bold mb-1">Product Categories</div>
+            <div class="text-white/60 text-sm">Thousands of SKUs stocked for GTA trades</div>
+          </div>
+        </div>
+
+        <div class="bg-brand-orange rounded-2xl p-6 text-white">
+          <div class="text-3xl font-black mb-1 count-num" data-count-to="1" data-prefix="$" data-suffix="K+" data-decimals="0" data-delay="100">$0K+</div>
+          <div class="font-semibold text-sm">Free GTA Delivery</div>
+          <div class="text-white/70 text-xs mt-1">On orders before tax</div>
+        </div>
+
+        <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+          <div class="text-3xl font-black text-brand-navy mb-1 count-num" data-count-to="20" data-suffix="+" data-decimals="0" data-delay="200">0+</div>
+          <div class="font-semibold text-sm text-brand-navy">Years Serving<br/>the GTA</div>
+        </div>
+
+        <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+          <div class="text-3xl font-black text-brand-navy mb-1 count-num" data-count-to="5" data-suffix="★" data-decimals="0" data-delay="300">0★</div>
+          <div class="font-semibold text-sm text-brand-navy">Google Rating<br/>19 Reviews</div>
+        </div>
+
+        <div class="bg-brand-rust/10 border border-brand-rust/20 rounded-2xl p-6">
+          <div class="text-3xl font-black text-brand-rust mb-1">Same</div>
+          <div class="font-semibold text-sm text-brand-rust">Day Fulfillment<br/>Available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

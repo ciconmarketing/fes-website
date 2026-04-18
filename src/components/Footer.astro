@@ -1,0 +1,141 @@
+---
+import { siteData } from '../lib/data';
+const { business, categories } = siteData;
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-brand-navy text-white pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <!-- Column 1: Brand -->
+      <div class="sm:col-span-2 lg:col-span-1">
+        <img src="/logo.png" alt="First Electrical Supply" class="h-12 w-auto mb-5" />
+        <p class="text-white/50 text-sm leading-relaxed mb-6">
+          GTA's independent, trade-trusted electrical supply house. Stocked, knowledgeable, and actually
+          answers the phone.
+        </p>
+        <!-- Hours -->
+        <div class="space-y-1.5 text-sm">
+          <div class="flex gap-2">
+            <span class="text-white/40 w-20 shrink-0">Mon–Fri</span>
+            <span class="text-white/70">7:00 AM – 5:00 PM</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-white/40 w-20 shrink-0">Saturday</span>
+            <span class="text-white/70">8:00 AM – 12:00 PM</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-white/40 w-20 shrink-0">Sunday</span>
+            <span class="text-white/70">Closed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div>
+        <h4 class="font-bold text-sm uppercase tracking-widest text-white/40 mb-5">Quick Links</h4>
+        <ul class="space-y-3 text-sm">
+          {[
+            { label: 'Why Choose Us', href: '#why-us' },
+            { label: 'Products', href: '#products' },
+            { label: 'Who We Serve', href: '#who-we-serve' },
+            { label: 'How It Works', href: '#how-it-works' },
+            { label: 'Reviews', href: '#reviews' },
+            { label: 'Get a Quote', href: '#quote' },
+            { label: 'About Us', href: 'https://firstelectricalsupply.com/page/about' },
+            { label: 'Delivery Policy', href: 'https://firstelectricalsupply.com/page/delivery' },
+          ].map(link => (
+            <li>
+              <a href={link.href} class="text-white/55 hover:text-brand-orange transition-colors">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Column 3: Categories -->
+      <div>
+        <h4 class="font-bold text-sm uppercase tracking-widest text-white/40 mb-5">Products</h4>
+        <ul class="space-y-3 text-sm">
+          {categories.slice(0, 8).map(cat => (
+            <li>
+              <a
+                href={`https://firstelectricalsupply.com/page/${cat.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-white/55 hover:text-brand-orange transition-colors"
+              >
+                {cat.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Column 4: Contact -->
+      <div>
+        <h4 class="font-bold text-sm uppercase tracking-widest text-white/40 mb-5">Contact</h4>
+        <ul class="space-y-4 text-sm">
+          <li>
+            <a href="tel:+14168827070" class="flex items-start gap-3 text-white/55 hover:text-brand-orange transition-colors group">
+              <svg class="w-5 h-5 shrink-0 mt-0.5 group-hover:text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              (416) 882-7070
+            </a>
+          </li>
+          <li>
+            <a href="mailto:info@firstelectricalsupply.com" class="flex items-start gap-3 text-white/55 hover:text-brand-orange transition-colors group">
+              <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              info@firstelectricalsupply.com
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://maps.app.goo.gl/Sntah1suZmvJnU629"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-start gap-3 text-white/55 hover:text-brand-orange transition-colors group"
+            >
+              <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              28 Industrial St, Unit 106<br/>East York, ON M4G 1Y9
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Google Maps — full-width row -->
+    <div class="mb-10 rounded-xl overflow-hidden border border-white/10">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.6!2d-79.3592126!3d43.7084496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d2cdce199a6b03%3A0x1ecd30d5999c7966!2s28+Industrial+St%2C+East+York%2C+ON+M4G+1Y9!5e0!3m2!1sen!2sca!4v1"
+        width="100%"
+        height="280"
+        style="border:0;"
+        allowfullscreen={false}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="First Electrical Supply location"
+      ></iframe>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/30">
+      <p>
+        <a href="/" class="hover:text-brand-orange transition-colors font-medium text-white/50">First Electrical Supply Inc.</a>
+        &nbsp;© {year}. All Rights Reserved.
+      </p>
+      <div class="flex gap-6">
+        <a href="https://firstelectricalsupply.com/page/policy" class="hover:text-brand-orange transition-colors">Sales & Delivery Policy</a>
+        <a href="https://firstelectricalsupply.com/page/term" class="hover:text-brand-orange transition-colors">Terms of Use</a>
+      </div>
+      <p class="text-white/20 text-xs">
+        Marketing by <a href="https://cicon.ca" class="hover:text-white/40 transition-colors" target="_blank" rel="noopener noreferrer">CiCon Marketing</a>
+      </p>
+    </div>
+  </div>
+</footer>

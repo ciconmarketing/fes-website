@@ -1,0 +1,215 @@
+---
+import { siteData } from '../lib/data';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import TrustSignals from '../components/TrustSignals.astro';
+import WhyChooseUs from '../components/WhyChooseUs.astro';
+import WhatWeDo from '../components/WhatWeDo.astro';
+import WhoWeServe from '../components/WhoWeServe.astro';
+import Workflow from '../components/Workflow.astro';
+import ProductCards from '../components/ProductCards.astro';
+import Testimonials from '../components/Testimonials.astro';
+import LeadForm from '../components/LeadForm.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/globals.css';
+
+const { business } = siteData;
+const title = `${business.name} | GTA's Trade-Trusted Electrical Supply House`;
+const description = `Electrical supply house serving the GTA for 20+ years. Contractor pricing, same-day fulfillment, free delivery on $1,000+ orders. 5.0★ Google rating. Call (416) 882-7070.`;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://firstelectricalsupply.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://firstelectricalsupply.com/" />
+  <meta property="og:locale" content="en_CA" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/logo.png" />
+
+  <!-- Google Fonts preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Schema.org Local Business structured data -->
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "First Electrical Supply Inc.",
+      "description": "Electrical supply house serving the GTA for 20+ years. Contractor pricing, same-day fulfillment, free GTA delivery.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "28 Industrial St, Unit 106",
+        "addressLocality": "East York",
+        "addressRegion": "ON",
+        "postalCode": "M4G 1Y9",
+        "addressCountry": "CA"
+      },
+      "telephone": "+14168827070",
+      "email": "info@firstelectricalsupply.com",
+      "url": "https://firstelectricalsupply.com",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "19"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "07:00",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:00",
+          "closes": "12:00"
+        }
+      ]
+    })}
+  </script>
+</head>
+<body>
+  <Navbar />
+  <main>
+    <Hero />
+    <TrustSignals />
+    <WhyChooseUs />
+    <WhatWeDo />
+    <WhoWeServe />
+    <Workflow />
+    <ProductCards />
+    <Testimonials />
+    <LeadForm />
+    <FinalCTA />
+  </main>
+  <Footer />
+</body>
+</html>
+
+<script>
+  // ── Scroll reveal ──────────────────────────────────────────────
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+  );
+  document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+
+  // ── Number count-up animation ──────────────────────────────────
+  function easeOutCubic(t: number) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function runCounter(el: HTMLElement) {
+    const target   = parseFloat(el.dataset.countTo!);
+    const suffix   = el.dataset.suffix   ?? '';
+    const prefix   = el.dataset.prefix   ?? '';
+    const decimals = parseInt(el.dataset.decimals ?? '0');
+    const delay    = parseInt(el.dataset.delay    ?? '0');
+    const duration = 1800;
+
+    setTimeout(() => {
+      const startTime = performance.now();
+
+      function tick(now: number) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased    = easeOutCubic(progress);
+        const current  = target * eased;
+
+        el.textContent = prefix + current.toFixed(decimals) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = prefix + target.toFixed(decimals) + suffix;
+        }
+      }
+
+      requestAnimationFrame(tick);
+    }, delay);
+  }
+
+  // Observe every .count-num element — fire once when 40% visible
+  const counterObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          if (!el.dataset.counted) {
+            el.dataset.counted = '1';
+            runCounter(el);
+          }
+          counterObserver.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+
+  document.querySelectorAll<HTMLElement>('.count-num').forEach((el) => {
+    counterObserver.observe(el);
+  });
+
+  // ── Free GTA Delivery: countdown $100 → $0 → "Free" ───────────
+  function runFreeCountdown(el: HTMLElement) {
+    const delay    = parseInt(el.dataset.delay ?? '0');
+    const duration = 1800;
+    const start    = 100;
+
+    setTimeout(() => {
+      const startTime = performance.now();
+
+      function tick(now: number) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased    = easeOutCubic(progress);
+        const current  = Math.round(start * (1 - eased));
+
+        el.textContent = current > 0 ? `$${current}` : 'Free';
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        }
+      }
+
+      requestAnimationFrame(tick);
+    }, delay);
+  }
+
+  const freeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        if (!el.dataset.counted) {
+          el.dataset.counted = '1';
+          runFreeCountdown(el);
+        }
+        freeObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll<HTMLElement>('.count-down-free').forEach((el) => {
+    freeObserver.observe(el);
+  });
+</script>

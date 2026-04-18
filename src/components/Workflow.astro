@@ -1,0 +1,111 @@
+---
+import { siteData } from '../lib/data';
+const { workflow } = siteData;
+---
+
+<section id="how-it-works" class="py-24 bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20" data-reveal>
+      <span class="section-tag">How it works</span>
+      <h2 class="section-heading mb-4">From Request to Job Site<br/>in Four Simple Steps</h2>
+      <p class="text-gray-500 text-lg max-w-xl mx-auto">
+        No confusing portals. No robo-responses. Just a fast, reliable process that keeps your job moving.
+      </p>
+    </div>
+
+    <!-- Steps with animated connector -->
+    <div class="relative" id="workflow-steps">
+      <!-- Animated background connector line (desktop only) -->
+      <div class="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gray-100">
+        <div
+          id="workflow-line"
+          class="h-full bg-gradient-to-r from-brand-navy via-brand-orange to-brand-navy origin-left"
+          style="transform: scaleX(0); transition: transform 1.4s cubic-bezier(0.22,1,0.36,1);"
+        ></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        {workflow.map((step, i) => (
+          <div
+            class="workflow-step relative text-center"
+            data-step={String(i)}
+            style={`opacity:0; transform: translateY(40px);`}
+          >
+            <!-- Circle -->
+            <div
+              class="workflow-circle relative inline-flex items-center justify-center w-16 h-16 rounded-full
+                     bg-brand-navy text-white font-black text-xl mb-6 mx-auto shadow-lg shadow-brand-navy/20"
+              style="transform: scale(0.5); transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1);"
+            >
+              {step.step}
+              <!-- Mobile arrow -->
+              {i < workflow.length - 1 && (
+                <span class="lg:hidden absolute -bottom-8 left-1/2 -translate-x-1/2 text-brand-orange text-xl font-bold leading-none">↓</span>
+              )}
+            </div>
+
+            <h3 class="text-brand-navy font-bold text-lg mb-3">{step.title}</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Bottom trust strip -->
+    <div class="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500" data-reveal>
+      {[
+        'No surprise substitutions',
+        'Stock confirmed before you commit',
+        'Free GTA delivery on $1,000+ orders',
+        'Damage reported within 24 hours? We fix it.',
+      ].map(item => (
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          {item}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.getElementById('workflow-steps')!;
+  const steps   = section.querySelectorAll<HTMLElement>('.workflow-step');
+  const circles = section.querySelectorAll<HTMLElement>('.workflow-circle');
+  const line    = document.getElementById('workflow-line')!;
+  let fired = false;
+
+  const obs = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting || fired) return;
+    fired = true;
+    obs.disconnect();
+
+    // Animate the connector line first
+    setTimeout(() => { line.style.transform = 'scaleX(1)'; }, 100);
+
+    // Stagger each step: fade+slide up, then circle pop
+    steps.forEach((step, i) => {
+      const circle = circles[i];
+      const delay  = 200 + i * 220;
+
+      setTimeout(() => {
+        // Step card slides up
+        step.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        step.style.opacity    = '1';
+        step.style.transform  = 'translateY(0)';
+
+        // Circle pops in slightly after
+        setTimeout(() => {
+          circle.style.transform = 'scale(1)';
+          // Brief orange flash on the circle
+          circle.style.background = '#FA8725';
+          setTimeout(() => { circle.style.background = '#174470'; circle.style.transition += ', background 0.4s ease'; }, 250);
+        }, 120);
+      }, delay);
+    });
+  }, { threshold: 0.25 });
+
+  obs.observe(section);
+</script>

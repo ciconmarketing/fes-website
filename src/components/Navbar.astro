@@ -1,0 +1,94 @@
+---
+import { siteData } from '../lib/data';
+const { business } = siteData;
+---
+
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+    <!-- Logo -->
+    <a href="/" class="flex items-center shrink-0">
+      <img src="/logo.png" alt="First Electrical Supply" class="h-12 w-auto nav-logo-light" />
+      <img src="/logo.png" alt="First Electrical Supply" class="h-12 w-auto nav-logo-dark hidden" />
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#why-us" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Why Us</a>
+      <a href="#products" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Products</a>
+      <a href="#who-we-serve" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Who We Serve</a>
+      <a href="#how-it-works" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">How It Works</a>
+      <a href="#reviews" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Reviews</a>
+      <a href="/contact" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Contact</a>
+    </div>
+
+    <!-- CTA -->
+    <div class="hidden lg:flex items-center gap-4">
+      <a href={`tel:${business.phone.replace(/\D/g,'')}`} class="text-white/80 hover:text-white text-sm font-medium transition-colors">
+        {business.phone}
+      </a>
+      <a href="#quote" class="nav-cta bg-brand-orange text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-all text-sm">
+        Get a Free Quote
+      </a>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button id="mobile-menu-btn" class="lg:hidden p-2 text-white" aria-label="Open menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden lg:hidden bg-brand-navy border-t border-white/10">
+    <div class="px-4 py-4 flex flex-col gap-4">
+      <a href="#why-us" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Why Us</a>
+      <a href="#products" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Products</a>
+      <a href="#who-we-serve" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Who We Serve</a>
+      <a href="#how-it-works" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">How It Works</a>
+      <a href="#reviews" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Reviews</a>
+      <a href="/contact" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Contact</a>
+      <a href="#quote" class="btn-primary text-center mt-2">Get a Free Quote</a>
+      <a href={`tel:${business.phone.replace(/\D/g,'')}`} class="text-center text-white/80 font-medium">{business.phone}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const navbar = document.getElementById('navbar')!;
+  const mobileBtn = document.getElementById('mobile-menu-btn')!;
+  const mobileMenu = document.getElementById('mobile-menu')!;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      navbar.classList.add('scrolled');
+      navbar.style.background = 'rgba(255,255,255,0.98)';
+      navbar.style.backdropFilter = 'blur(12px)';
+      navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+      // Update nav links for light bg
+      document.querySelectorAll('.nav-link').forEach(el => {
+        (el as HTMLElement).style.color = '#174470';
+      });
+      // Update mobile menu button
+      mobileBtn.style.color = '#174470';
+    } else {
+      navbar.classList.remove('scrolled');
+      navbar.style.background = 'transparent';
+      navbar.style.backdropFilter = 'none';
+      navbar.style.boxShadow = 'none';
+      document.querySelectorAll('.nav-link').forEach(el => {
+        (el as HTMLElement).style.color = 'rgba(255,255,255,0.9)';
+      });
+      mobileBtn.style.color = 'white';
+    }
+  });
+
+  mobileBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Close mobile menu on link click
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+  });
+</script>

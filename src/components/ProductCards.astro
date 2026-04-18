@@ -1,0 +1,97 @@
+---
+import { siteData } from '../lib/data';
+const { categories } = siteData;
+---
+
+<section id="products" class="bg-gray-50">
+  <!-- Full-width warehouse image banner -->
+  <div class="relative w-full overflow-hidden" style="height: 380px;" data-reveal>
+    <img
+      src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1600&q=80"
+      alt="Electrical supply products — breakers, panels, and components"
+      class="w-full h-full object-cover object-center"
+      loading="lazy"
+    />
+    <!-- Gradient overlays -->
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-navy/80 via-brand-navy/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-50 via-transparent to-transparent"></div>
+    <!-- Overlay text -->
+    <div class="absolute inset-0 flex items-center">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <span class="section-tag">Our products</span>
+        <h2 class="section-heading-white text-4xl sm:text-5xl lg:text-6xl mb-4">
+          11 Categories.<br/>Thousands of SKUs.
+        </h2>
+        <p class="text-white/70 text-lg max-w-lg">
+          Stocked for the full scope of residential, commercial, and industrial electrical work across the GTA.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      {categories.map((cat, i) => (
+        <a
+          href={`https://firstelectricalsupply.com/page/${cat.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group bg-white rounded-2xl p-6 border border-gray-100 card-hover flex flex-col gap-3 cursor-pointer"
+          data-reveal
+          data-reveal-delay={String((i % 4) + 1)}
+        >
+          <!-- Icon -->
+          <div class="text-3xl mb-1">{cat.icon}</div>
+
+          <!-- Category name -->
+          <h3 class="font-bold text-brand-navy text-base group-hover:text-brand-orange transition-colors leading-snug">
+            {cat.name}
+          </h3>
+
+          <!-- Description -->
+          <p class="text-gray-400 text-xs leading-relaxed flex-1">{cat.desc}</p>
+
+          <!-- Arrow -->
+          <div class="flex items-center gap-1 text-brand-orange text-xs font-semibold mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            Shop category
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+          </div>
+        </a>
+      ))}
+
+      <!-- "Browse All" card -->
+      <a
+        href="https://firstelectricalsupply.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group bg-brand-navy rounded-2xl p-6 border border-brand-navy card-hover flex flex-col items-center justify-center gap-3 text-center cursor-pointer"
+        data-reveal
+        data-reveal-delay="4"
+      >
+        <div class="w-12 h-12 rounded-full border-2 border-brand-orange/40 flex items-center justify-center mb-2 group-hover:border-brand-orange transition-colors">
+          <svg class="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-white text-base">Browse Full Catalogue</h3>
+        <p class="text-white/50 text-xs">Visit our online store for all products</p>
+      </a>
+    </div>
+
+    <!-- Estimation CTA -->
+    <div class="mt-12 bg-brand-navy rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 justify-between" data-reveal>
+      <div>
+        <h3 class="text-2xl font-bold text-white mb-2">Need help specing a project?</h3>
+        <p class="text-white/60">Our in-house estimation team pairs the right products to your job requirements — design, build, or improvement.</p>
+      </div>
+      <a href="#quote" class="btn-primary whitespace-nowrap shrink-0">
+        Request Estimation
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
