@@ -2,9 +2,19 @@
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/globals.css';
+import { siteData } from '../lib/data';
 
-const title = 'Contact Us | First Electrical Supply Inc.';
-const description = 'Get in touch with First Electrical Supply. Call (416) 882-7070, email us, or visit our East York location. Same-day quotes for GTA contractors.';
+const { contactPage: cp, business } = siteData;
+
+const title = cp.seoTitle ?? 'Contact Us | First Electrical Supply Inc.';
+const description = cp.seoDescription ?? 'Get in touch with First Electrical Supply. Call (416) 882-7070, email us, or visit our East York location. Same-day quotes for GTA contractors.';
+
+const heroImage = cp.heroImageUrl ?? 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1600&auto=format&fit=crop&q=80';
+const phone = business.phone ?? '(416) 882-7070';
+const email = business.email ?? 'info@firstelectricalsupply.com';
+const address = business.address ?? '28 Industrial St, Unit 106, East York, ON M4G 1Y9';
+const hours = business.hours ?? 'Mon–Fri 7am–5pm · Sat 8am–12pm';
+const mapEmbedUrl = business.mapEmbedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.6!2d-79.3592126!3d43.7084496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d2cdce199a6b03%3A0x1ecd30d5999c7966!2s28+Industrial+St%2C+East+York%2C+ON+M4G+1Y9!5e0!3m2!1sen!2sca!4v1';
 ---
 
 <!doctype html>
@@ -14,7 +24,7 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <link rel="canonical" href="https://firstelectricalsupply.com/contact" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
@@ -40,7 +50,7 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
       <div class="absolute inset-0 z-0">
         <img
           id="hero-bg"
-          src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1600&auto=format&fit=crop&q=80"
+          src={heroImage}
           alt=""
           class="w-full h-full object-cover"
           style="transform-origin: center center;"
@@ -51,13 +61,12 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
 
       <!-- Content -->
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="inline-block text-brand-orange font-semibold text-sm uppercase tracking-widest mb-4">Get in Touch</span>
+        <span class="inline-block text-brand-orange font-semibold text-sm uppercase tracking-widest mb-4">{cp.heroBadge}</span>
         <h1 class="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">
-          We Actually Answer<br/>the Phone.
+          {cp.heroHeadline}
         </h1>
         <p class="text-white/60 text-lg max-w-xl mx-auto">
-          Call, email, or walk in. Our team is ready to quote, confirm stock,
-          and get your order moving — same business day.
+          {cp.heroSubheadline}
         </p>
       </div>
     </section>
@@ -81,7 +90,7 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
           <div class="space-y-10">
             <!-- Info cards -->
             <div class="grid sm:grid-cols-2 gap-5">
-              <a href="tel:+14168827070"
+              <a href={`tel:+1${phone.replace(/\D/g, '')}`}
                 class="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition-all"
               >
                 <div class="w-12 h-12 rounded-xl bg-brand-navy/5 flex items-center justify-center mb-4 group-hover:bg-brand-orange/10 transition-colors">
@@ -90,11 +99,11 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
                   </svg>
                 </div>
                 <div class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1">Phone</div>
-                <div class="font-bold text-brand-navy text-lg group-hover:text-brand-orange transition-colors">(416) 882-7070</div>
-                <div class="text-gray-400 text-sm mt-1">Mon–Fri 7am–5pm · Sat 8am–12pm</div>
+                <div class="font-bold text-brand-navy text-lg group-hover:text-brand-orange transition-colors">{phone}</div>
+                <div class="text-gray-400 text-sm mt-1">{hours}</div>
               </a>
 
-              <a href="mailto:info@firstelectricalsupply.com"
+              <a href={`mailto:${email}`}
                 class="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition-all"
               >
                 <div class="w-12 h-12 rounded-xl bg-brand-navy/5 flex items-center justify-center mb-4 group-hover:bg-brand-orange/10 transition-colors">
@@ -103,7 +112,7 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
                   </svg>
                 </div>
                 <div class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1">Email</div>
-                <div class="font-bold text-brand-navy text-base group-hover:text-brand-orange transition-colors break-all">info@firstelectricalsupply.com</div>
+                <div class="font-bold text-brand-navy text-base group-hover:text-brand-orange transition-colors break-all">{email}</div>
                 <div class="text-gray-400 text-sm mt-1">We reply same business day</div>
               </a>
 
@@ -117,8 +126,7 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
                   </svg>
                 </div>
                 <div class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1">Location</div>
-                <div class="font-bold text-brand-navy group-hover:text-brand-orange transition-colors">28 Industrial St, Unit 106</div>
-                <div class="text-gray-500 text-sm">East York, ON M4G 1Y9</div>
+                <div class="font-bold text-brand-navy group-hover:text-brand-orange transition-colors">{address}</div>
               </a>
 
               <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
@@ -128,27 +136,14 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
                   </svg>
                 </div>
                 <div class="text-xs text-gray-400 font-semibold uppercase tracking-widest mb-1">Hours</div>
-                <div class="space-y-1 text-sm">
-                  <div class="flex justify-between">
-                    <span class="text-gray-500">Mon – Fri</span>
-                    <span class="font-semibold text-brand-navy">7:00 AM – 5:00 PM</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-500">Saturday</span>
-                    <span class="font-semibold text-brand-navy">8:00 AM – 12:00 PM</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-500">Sunday</span>
-                    <span class="font-semibold text-gray-400">Closed</span>
-                  </div>
-                </div>
+                <div class="text-sm font-semibold text-brand-navy">{hours}</div>
               </div>
             </div>
 
             <!-- Map -->
             <div class="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.6!2d-79.3592126!3d43.7084496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d2cdce199a6b03%3A0x1ecd30d5999c7966!2s28+Industrial+St%2C+East+York%2C+ON+M4G+1Y9!5e0!3m2!1sen!2sca!4v1"
+                src={mapEmbedUrl}
                 width="100%"
                 height="340"
                 style="border:0;"
@@ -191,6 +186,27 @@ const description = 'Get in touch with First Electrical Supply. Call (416) 882-7
         </div>
       </div>
     </section>
+    <!-- FAQ section — only renders when content is added in Sanity -->
+    {cp.faqItems.length > 0 && (
+      <section class="py-20 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-black text-brand-navy text-center mb-12">Frequently Asked Questions</h2>
+          <div class="space-y-4">
+            {cp.faqItems.map((item: { question: string; answer: string }) => (
+              <details class="group border border-gray-200 rounded-2xl overflow-hidden">
+                <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer font-semibold text-brand-navy hover:text-brand-orange transition-colors list-none">
+                  {item.question}
+                  <svg class="w-5 h-5 shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="px-6 pb-5 text-gray-500 leading-relaxed">{item.answer}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
   </main>
 
   <Footer />

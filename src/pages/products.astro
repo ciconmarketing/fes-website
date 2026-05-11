@@ -1,0 +1,468 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { siteData } from '../lib/data';
+import '../styles/globals.css';
+
+const { productsPage: pg, categories } = siteData;
+
+const title = pg.seoTitle ?? 'Our Products | First Electrical Supply Inc.';
+const description = pg.seoDescription ?? '11 electrical product categories stocked for residential, commercial, and industrial work across the GTA. Breakers, cables, lighting, conduit, security cameras & more.';
+
+// Local image fallbacks — used when Sanity has no image uploaded yet for a category
+const localImages: Record<string, { image: string; imageAlt: string; tagline: string; longDesc: string; keyProducts: string[]; highlight: string }> = {
+  'security-camera': {
+    image: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=900&auto=format&fit=crop&q=80',
+    imageAlt: 'Security IP cameras mounted outdoors',
+    tagline: 'Full-Spectrum Surveillance Solutions',
+    longDesc: 'We stock IP, AHD, PTZ, and WiFi cameras alongside NVR and DVR recording systems for every application size — from a single-camera residential install to a multi-site commercial surveillance network. Our CCTV accessories and PoE switches let you build a complete system from one supplier, without chasing specialty distributors.',
+    keyProducts: ['IP Cameras', 'PTZ Cameras', 'AHD / HD-CVI Cameras', 'WiFi Cameras', '4K NVR / DVR Systems', 'PoE Switches', 'Outdoor Enclosures', 'CCTV Accessories'],
+    highlight: 'Indoor, outdoor, and multi-site ready',
+  },
+  'distribution': {
+    image: '/images/distribution.jpg',
+    imageAlt: 'Electrical panel and circuit breakers',
+    tagline: 'The Heart of Every Electrical System',
+    longDesc: 'Circuit breakers, panel boards, and safety switches form the backbone of every electrical installation we support. We carry residential and commercial load centres, EV-ready equipment, surge protective devices, and disconnect switches across a wide range of ampacities and configurations.',
+    keyProducts: ['Circuit Breakers (15A–400A)', 'Load Centres & Panel Boards', 'Safety Switches & Fuses', 'EV Charging Equipment', 'Surge Protective Devices', 'Disconnect Switches', 'Meter Bases', 'Bus Bars & Lugs'],
+    highlight: 'EV-ready & arc-fault rated options in stock',
+  },
+  'lighting': {
+    image: '/images/lighting.jpg',
+    imageAlt: 'LED commercial and industrial ceiling lighting',
+    tagline: 'LED-First. Code-Compliant. Always Stocked.',
+    longDesc: 'Our lighting inventory spans the full fixture-to-control chain — LED pot lights, flat panels, troffers, emergency lighting, and landscape fixtures for residential, commercial, and industrial applications. We carry dimmable drivers, motion sensors, and DLC/Energy Star certified fixtures.',
+    keyProducts: ['LED Pot Lights & Downlights', 'Troffer & Flat Panel Lights', 'Linear LED Strip & Fixtures', 'Emergency & Exit Lights', 'Landscape & Outdoor Fixtures', 'Dimmer Controls', 'Motion Sensor Switches', 'LED Drivers & Ballasts'],
+    highlight: 'Energy Star & DLC certified options available',
+  },
+  'wire-cord-cable': {
+    image: '/images/wire-cord-cable.jpg',
+    imageAlt: 'Large industrial electrical cable spool and wire reel',
+    tagline: 'The Right Gauge, the Right Rating, on the Shelf.',
+    longDesc: 'We carry wire and cable for every installation type — AC90 armoured for commercial rough-in, NMD-90 for residential, TECK for industrial, Cat 6/6A for data, and specialty cables for fire alarm and AV. Available cut to length or in full reels.',
+    keyProducts: ['AC90 Armoured Cable', 'NMD-90 Romex', 'Cat 6 / Cat 6A Ethernet', 'TECK 90 Industrial Cable', 'Fire Alarm & Signal Wire', 'RG-6 Coaxial Cable', 'Flexible Cords (SOOW)', 'Direct Burial Cable'],
+    highlight: 'Cut to length or full spool — your choice',
+  },
+  'wiring-devices': {
+    image: '/images/wiring-devices.jpg',
+    imageAlt: 'Electrical plug in wall outlet — wiring devices',
+    tagline: 'Every Outlet, Switch & Sensor You Need',
+    longDesc: 'From standard duplex receptacles to tamper-resistant, GFCI, AFCI, and weather-resistant devices — we stock the full spectrum for residential and commercial code compliance.',
+    keyProducts: ['Duplex & Quad Receptacles', 'GFCI & AFCI Outlets', 'Tamper-Resistant Devices', 'Rocker & Toggle Switches', 'Motion & Occupancy Sensors', 'Plugs & Connectors', 'Floor Boxes & Covers', 'Decorator & Commercial Plates'],
+    highlight: 'TR, WR, GFCI, and AFCI rated in stock',
+  },
+  'conduit-fittings-accessories': {
+    image: '/images/conduit-fittings.jpg',
+    imageAlt: 'EMT steel conduit and electrical pipe fittings installation',
+    tagline: 'The Backbone of Your Raceway System',
+    longDesc: 'We carry EMT, ENT, liquid tight, and rigid PVC conduit in all common trade sizes alongside a complete range of compatible fittings, bodies, and straps.',
+    keyProducts: ['EMT Steel Conduit', 'ENT Flexible Blue Conduit', 'Liquid Tight Flexible Conduit', 'Rigid PVC Conduit', 'Conduit Bodies (LB, T, C, LL)', 'Set-Screw & Compression Couplings', 'Locknuts & Bushings', 'Conduit Straps & Hangers'],
+    highlight: 'Trade sizes ½" through 4" available',
+  },
+  'boxes-covers': {
+    image: '/images/box.jpg',
+    imageAlt: 'Electrician installing apartment fusebox and electrical boxes',
+    tagline: 'Rough-In Right the First Time',
+    longDesc: 'Steel outlet boxes, weatherproof covers, masonry boxes, concrete boxes, and ceiling boxes — our rough-in inventory covers every wall type and application scenario.',
+    keyProducts: ['Steel Outlet & Junction Boxes', 'Weatherproof Boxes & Covers', 'Cast Conduit Bodies', 'Masonry & Concrete Boxes', 'Ceiling & Pancake Boxes', '4" & 4-11/16" Square Boxes', 'Remodel Boxes & Brackets', 'Raised Covers & Mud Rings'],
+    highlight: 'New work & remodel options in every size',
+  },
+  'tools-hardware': {
+    image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=900&auto=format&fit=crop&q=80',
+    imageAlt: 'Professional electrical hand tools and test equipment',
+    tagline: 'Pro-Grade Tools at the Counter',
+    longDesc: 'We keep a working inventory of the hand tools, testing equipment, and consumable hardware that electricians burn through most — wire strippers, crimpers, fish tape, voltage testers, and PPE.',
+    keyProducts: ['Wire Strippers & Cutters', 'Crimping Tools & Dies', 'Fish Tape & Rods', 'Voltage Testers & Meters', 'Cable Staples & Staple Guns', 'Tie Wraps & Cable Clips', 'PPE (Gloves, Safety Glasses)', 'Tool Bags & Pouches'],
+    highlight: 'In-stock hand tools — no wait, no special order',
+  },
+  'low-voltage-audio-video': {
+    image: '/images/stereo-column-of-modern-audio-system-close-up-2026-03-19-08-01-02-utc.jpg',
+    imageAlt: 'AV and low voltage cables and connectors',
+    tagline: 'Clean Installs from the Wall to the Rack',
+    longDesc: 'We supply the structured cabling, AV cables, and low-voltage hardware for data, audio, and video installations — from the wall plate all the way to the server rack.',
+    keyProducts: ['In-Wall & Ceiling Speakers', 'HDMI & AV Cables', 'Patch Panels & Keystone Jacks', 'Server Racks & Cabinets', 'Wall Plates & Faceplates', 'Cable Management Raceways', 'AV Enclosures & Brackets', 'Cat6/Cat6A Bulk Cable'],
+    highlight: 'Residential, commercial & hospitality ready',
+  },
+  'smoke-carbon-monoxide-detectors': {
+    image: '/images/close-up-of-an-automatic-fire-safety-system-2026-03-17-00-00-06-utc.jpg',
+    imageAlt: 'Smoke and carbon monoxide detector mounted on ceiling',
+    tagline: 'Code-Compliant Life Safety Products',
+    longDesc: 'We stock a full range of OBC and ULC-certified smoke alarms, carbon monoxide detectors, and combination units for residential and commercial life safety compliance.',
+    keyProducts: ['Photoelectric Smoke Alarms', 'Ionization Smoke Detectors', 'Carbon Monoxide Alarms', 'Combination Smoke/CO Units', 'Interconnectable Hardwired Models', 'Battery Backup Detectors', 'Heat Detectors', 'Strobe & Sounder Devices'],
+    highlight: 'OBC & ULC-certified models on shelf',
+  },
+  'hvac-vacuum-systems': {
+    image: '/images/hvac.jpg',
+    imageAlt: 'Outdoor HVAC air conditioner compressor unit on building',
+    tagline: 'Comfort, Ventilation & Energy Recovery',
+    longDesc: 'We carry the electrical side of home comfort and energy efficiency — exhaust fans, heat recovery ventilators (HRV/ERV), electric fireplaces, snow melt systems, and central vacuum.',
+    keyProducts: ['Bathroom Exhaust Fans', 'Heat Recovery Ventilators (HRV/ERV)', 'Electric Fireplaces & Inserts', 'Snow Melt Controls & Mats', 'Attic & Whole-House Fans', 'Central Vacuum Systems', 'Vacuum Inlets & Accessories', 'Kitchen Range Hoods'],
+    highlight: 'Energy-efficient ventilation & comfort solutions',
+  },
+};
+
+// Merge Sanity data with local fallbacks — Sanity values take priority
+const products = categories.map(cat => {
+  const fb = localImages[cat.slug] ?? {
+    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=900&auto=format&fit=crop&q=80',
+    imageAlt: cat.name,
+    tagline: cat.name,
+    longDesc: cat.desc,
+    keyProducts: [],
+    highlight: cat.desc,
+  };
+  return {
+    id: cat.slug,
+    name: cat.name,
+    icon: cat.icon,
+    slug: cat.slug,
+    desc: cat.desc,
+    image: cat.imageUrl ?? fb.image,
+    imageAlt: cat.imageAlt ?? fb.imageAlt,
+    tagline: cat.tagline ?? fb.tagline,
+    longDesc: cat.longDesc ?? fb.longDesc,
+    keyProducts: cat.keyProducts?.length ? cat.keyProducts : fb.keyProducts,
+    highlight: cat.highlight ?? fb.highlight,
+  };
+});
+
+const heroImage = pg.heroImageUrl ?? 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1600&auto=format&fit=crop&q=80';
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://firstelectricalsupply.com/products" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://firstelectricalsupply.com/products" />
+  <meta property="og:locale" content="en_CA" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" /></noscript>
+
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://firstelectricalsupply.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Our Products", "item": "https://firstelectricalsupply.com/products" }
+      ]
+    })}
+  </script>
+</head>
+<body>
+  <Navbar />
+
+  <main>
+    <!-- ─── Hero ─────────────────────────────────────────────── -->
+    <section class="relative overflow-hidden" style="min-height: 520px; padding-top: 144px; padding-bottom: 80px;">
+      <div class="absolute inset-0 z-0">
+        <img
+          id="products-hero-bg"
+          src={heroImage}
+          alt=""
+          class="w-full h-full object-cover"
+          fetchpriority="high"
+          decoding="async"
+          style="transform-origin: center center;"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-brand-navy/90 via-brand-navy/70 to-brand-navy/40"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-navy/60 via-transparent to-transparent"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <nav class="flex items-center gap-2 text-white/50 text-sm">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <span class="text-white/80">Our Products</span>
+        </nav>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <span class="inline-block text-brand-orange font-semibold text-sm uppercase tracking-widest mb-4">{pg.heroBadge}</span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.05] mb-6 max-w-3xl">
+          {pg.heroHeadline}
+        </h1>
+        <p class="text-white/65 text-lg max-w-2xl leading-relaxed mb-10">
+          {pg.heroSubheadline}
+        </p>
+        <div class="flex flex-wrap gap-8">
+          {pg.stats.map((s: { val: string; label: string }) => (
+            <div>
+              <div class="text-2xl font-black text-brand-orange">{s.val}</div>
+              <div class="text-white/55 text-xs font-medium uppercase tracking-wide mt-0.5">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <script is:inline>
+      const bg = document.getElementById('products-hero-bg');
+      if (bg) {
+        bg.animate(
+          [
+            { transform: 'scale(1.06) translateX(0%)'  },
+            { transform: 'scale(1.0)  translateX(-1%)' },
+            { transform: 'scale(1.06) translateX(0%)'  },
+          ],
+          { duration: 16000, iterations: Infinity, easing: 'ease-in-out' }
+        );
+      }
+    </script>
+
+    <!-- ─── Sticky Category Nav ───────────────────────────────── -->
+    <div id="cat-nav" class="sticky top-[80px] z-40 bg-white border-b border-gray-100 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide py-3" style="-webkit-overflow-scrolling: touch;">
+          {products.map(p => (
+            <a
+              href={`#${p.id}`}
+              class="cat-pill flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 text-gray-600 text-sm font-medium whitespace-nowrap hover:border-brand-orange hover:text-brand-orange hover:bg-brand-orange/5 transition-all duration-200"
+              data-target={p.id}
+            >
+              <span class="text-base leading-none">{p.icon}</span>
+              {p.name}
+            </a>
+          ))}
+          <a
+            href="https://firstelectricalsupply.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-navy text-white text-sm font-semibold whitespace-nowrap hover:bg-brand-navy/80 transition-all duration-200 ml-2"
+          >
+            Shop All
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Product Sections ──────────────────────────────────── -->
+    <div class="bg-white">
+      {products.map((p, i) => {
+        const isEven = i % 2 === 0;
+        return (
+          <section id={p.id} class={`py-20 lg:py-28 ${isEven ? 'bg-white' : 'bg-gray-50'}`}>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div class={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${!isEven ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+
+                <div class="relative" data-reveal>
+                  <div class="absolute -top-4 -left-4 w-14 h-14 bg-brand-navy rounded-2xl flex items-center justify-center z-10 shadow-lg">
+                    <span class="text-brand-orange font-black text-lg">{String(i + 1).padStart(2, '0')}</span>
+                  </div>
+                  <div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/3] bg-gray-100">
+                    <img
+                      src={p.image}
+                      alt={p.imageAlt}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  <div class="absolute -bottom-4 right-4 bg-brand-orange text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg shadow-orange-900/20 max-w-[220px] text-center leading-snug">
+                    {p.highlight}
+                  </div>
+                </div>
+
+                <div data-reveal data-reveal-delay="2">
+                  <div class="flex items-center gap-3 mb-5">
+                    <div class="w-12 h-12 rounded-xl bg-brand-navy/5 flex items-center justify-center text-2xl">
+                      {p.icon}
+                    </div>
+                    <span class="section-tag">{p.name}</span>
+                  </div>
+                  <h2 class="text-3xl sm:text-4xl font-black text-brand-navy leading-tight mb-4">
+                    {p.tagline}
+                  </h2>
+                  <p class="text-gray-500 text-base leading-relaxed mb-8">
+                    {p.longDesc}
+                  </p>
+                  <div class="mb-8">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Key Products</p>
+                    <div class="flex flex-wrap gap-2">
+                      {p.keyProducts.map((kp: string) => (
+                        <span class="inline-flex items-center gap-1.5 bg-brand-navy/5 border border-brand-navy/10 text-brand-navy text-xs font-semibold px-3 py-1.5 rounded-full">
+                          <span class="w-1.5 h-1.5 rounded-full bg-brand-orange flex-shrink-0"></span>
+                          {kp}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-3">
+                    <a
+                      href={`https://firstelectricalsupply.com/page/${p.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn-primary text-sm px-6 py-3"
+                    >
+                      Shop {p.name}
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                      </svg>
+                    </a>
+                    <a
+                      href="#quote"
+                      class="inline-flex items-center gap-2 border-2 border-brand-navy/20 text-brand-navy font-semibold px-6 py-3 rounded-lg hover:border-brand-orange hover:text-brand-orange active:scale-95 transition-all duration-200 text-sm"
+                    >
+                      Request a Quote
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
+        );
+      })}
+    </div>
+
+    <!-- ─── CTA Band ──────────────────────────────────────────── -->
+    <section class="bg-brand-navy py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8 items-center">
+          <div class="md:col-span-2">
+            <span class="text-brand-orange font-semibold text-sm uppercase tracking-widest">Can't find what you need?</span>
+            <h2 class="text-3xl sm:text-4xl font-black text-white mt-3 mb-4 leading-tight">
+              {pg.ctaBandHeadline}
+            </h2>
+            <p class="text-white/60 text-base leading-relaxed max-w-xl">
+              {pg.ctaBandBody}
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row md:flex-col gap-4">
+            <a href="tel:+14168827070" class="btn-primary text-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              Call (416) 882-7070
+            </a>
+            <a href="/contact" class="inline-flex items-center justify-center gap-2 border-2 border-white/30 text-white font-semibold px-7 py-3.5 rounded-lg hover:bg-white hover:text-brand-navy active:scale-95 transition-all duration-200">
+              Send a Message
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Quote Section ─────────────────────────────────────── -->
+    <section id="quote" class="py-20 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-reveal>
+        <span class="section-tag">Get a free quote</span>
+        <h2 class="section-heading mb-5 mt-2">
+          {pg.quoteHeadline}
+        </h2>
+        <p class="text-gray-500 text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
+          {pg.quoteBody}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="tel:+14168827070" class="btn-primary text-base px-8 py-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+            Call (416) 882-7070
+          </a>
+          <a href="/contact" class="btn-navy text-base px-8 py-4">
+            Request a Quote Online
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+          </a>
+        </div>
+        <div class="flex flex-wrap justify-center gap-8 mt-12 pt-10 border-t border-gray-200">
+          {[
+            { icon: 'M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z', fill: true, label: '5.0★ Google Rating · 19 Reviews' },
+            { icon: 'M5 13l4 4L19 7', fill: false, label: 'Free GTA Delivery on $1,000+' },
+            { icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', fill: false, label: 'Same-Day Order Fulfillment' },
+          ].map(t => (
+            <div class="flex items-center gap-2 text-gray-400 text-sm">
+              <svg class="w-4 h-4 text-brand-orange" fill={t.fill ? 'currentColor' : 'none'} stroke={t.fill ? 'none' : 'currentColor'} viewBox="0 0 24 24">
+                <path stroke-linecap={t.fill ? undefined : 'round'} stroke-linejoin={t.fill ? undefined : 'round'} stroke-width={t.fill ? undefined : '2'} d={t.icon}/>
+              </svg>
+              {t.label}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<script>
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+  );
+  document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+
+  const sections = document.querySelectorAll<HTMLElement>('section[id]');
+  const pills = document.querySelectorAll<HTMLAnchorElement>('.cat-pill');
+  const navHeight = 80 + 52;
+
+  function setActivePill(id: string) {
+    pills.forEach(p => {
+      const isActive = p.dataset.target === id;
+      p.classList.toggle('border-brand-orange', isActive);
+      p.classList.toggle('text-brand-orange', isActive);
+      p.classList.toggle('bg-brand-orange/5', isActive);
+      p.classList.toggle('border-gray-200', !isActive);
+      p.classList.toggle('text-gray-600', !isActive);
+      if (isActive) p.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    });
+  }
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setActivePill(entry.target.id);
+      });
+    },
+    { rootMargin: `-${navHeight}px 0px -50% 0px`, threshold: 0 }
+  );
+
+  sections.forEach(s => { if (s.id && s.id !== 'quote') sectionObserver.observe(s); });
+
+  document.querySelectorAll<HTMLAnchorElement>('.cat-pill').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+      e.preventDefault();
+      const target = document.querySelector<HTMLElement>(href);
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+<style>
+  .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+</style>

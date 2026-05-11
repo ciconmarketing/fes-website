@@ -1,6 +1,8 @@
 ---
 import { siteData } from '../lib/data';
 const { business } = siteData;
+const isHome = Astro.url.pathname === '/';
+const p = isHome ? '' : '/';
 ---
 
 <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
@@ -13,11 +15,11 @@ const { business } = siteData;
 
     <!-- Desktop Nav Links -->
     <div class="hidden lg:flex items-center gap-8">
-      <a href="#why-us" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Why Us</a>
-      <a href="#products" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Products</a>
-      <a href="#who-we-serve" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Who We Serve</a>
-      <a href="#how-it-works" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">How It Works</a>
-      <a href="#reviews" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Reviews</a>
+      <a href={`${p}#why-us`} class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Why Us</a>
+      <a href="/products" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Our Products</a>
+      <a href={`${p}#who-we-serve`} class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Who We Serve</a>
+      <a href={`${p}#how-it-works`} class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">How It Works</a>
+      <a href={`${p}#reviews`} class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Reviews</a>
       <a href="/contact" class="nav-link text-white/90 hover:text-brand-orange font-medium transition-colors text-sm">Contact</a>
     </div>
 
@@ -26,7 +28,7 @@ const { business } = siteData;
       <a href={`tel:${business.phone.replace(/\D/g,'')}`} class="text-white/80 hover:text-white text-sm font-medium transition-colors">
         {business.phone}
       </a>
-      <a href="#quote" class="nav-cta bg-brand-orange text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-all text-sm">
+      <a href={`${p}#quote`} class="nav-cta bg-brand-orange text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-orange-500 transition-all text-sm">
         Get a Free Quote
       </a>
     </div>
@@ -42,13 +44,13 @@ const { business } = siteData;
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden lg:hidden bg-brand-navy border-t border-white/10">
     <div class="px-4 py-4 flex flex-col gap-4">
-      <a href="#why-us" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Why Us</a>
-      <a href="#products" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Products</a>
-      <a href="#who-we-serve" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Who We Serve</a>
-      <a href="#how-it-works" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">How It Works</a>
-      <a href="#reviews" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Reviews</a>
+      <a href={`${p}#why-us`} class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Why Us</a>
+      <a href="/products" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Our Products</a>
+      <a href={`${p}#who-we-serve`} class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Who We Serve</a>
+      <a href={`${p}#how-it-works`} class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">How It Works</a>
+      <a href={`${p}#reviews`} class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Reviews</a>
       <a href="/contact" class="text-white/90 hover:text-brand-orange font-medium py-2 border-b border-white/10">Contact</a>
-      <a href="#quote" class="btn-primary text-center mt-2">Get a Free Quote</a>
+      <a href={`${p}#quote`} class="btn-primary text-center mt-2">Get a Free Quote</a>
       <a href={`tel:${business.phone.replace(/\D/g,'')}`} class="text-center text-white/80 font-medium">{business.phone}</a>
     </div>
   </div>

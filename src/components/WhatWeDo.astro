@@ -1,4 +1,6 @@
 ---
+import { siteData } from '../lib/data';
+const { whatWeDo } = siteData;
 ---
 
 <section class="py-24 bg-white overflow-hidden">
@@ -6,26 +8,16 @@
     <div class="grid lg:grid-cols-2 gap-16 items-center">
       <!-- Left: content -->
       <div data-reveal>
-        <span class="section-tag">What we do</span>
+        <span class="section-tag">{whatWeDo.badge}</span>
         <h2 class="section-heading mb-6">
-          Everything Electrical.<br/>
-          <span class="text-brand-orange">One Reliable Source.</span>
+          {whatWeDo.headline}<br/>
+          <span class="text-brand-orange">{whatWeDo.headlineAccent}</span>
         </h2>
         <p class="text-lg text-gray-500 leading-relaxed mb-8">
-          From the rough-in to the finish — wire, panels, conduit, lighting, controls, tools — we stock what
-          the GTA's electrical trades actually need, not what looks good on a product sheet.
+          {whatWeDo.body}
         </p>
         <ul class="space-y-4 mb-10">
-          {[
-            'Electrical distribution & switchgear',
-            'Wire, cable & conduit systems',
-            'Lighting: LED, emergency, landscape, controls',
-            'Security cameras, NVR/DVR, CCTV accessories',
-            'Wiring devices, plugs, motion sensors',
-            'HVAC, fans, heat pumps, snow melt',
-            'Tools, PPE & job site accessories',
-            'Low voltage A/V, speakers, data accessories',
-          ].map(item => (
+          {whatWeDo.bulletList.map((item: string) => (
             <li class="flex items-start gap-3 text-gray-600">
               <span class="mt-1 w-5 h-5 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0">
                 <svg class="w-3 h-3 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
@@ -36,8 +28,8 @@
             </li>
           ))}
         </ul>
-        <a href="#products" class="btn-navy">
-          Browse All Categories
+        <a href={whatWeDo.ctaHref} class="btn-navy">
+          {whatWeDo.ctaLabel}
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
           </svg>
@@ -46,7 +38,6 @@
 
       <!-- Right: visual grid -->
       <div class="grid grid-cols-2 gap-4" data-reveal data-reveal-delay="2">
-        <!-- Stat cards overlaid on a visual -->
         <div class="col-span-2 bg-brand-navy rounded-2xl p-8 text-white relative overflow-hidden">
           <div class="absolute inset-0 opacity-10">
             <svg viewBox="0 0 400 200" class="w-full h-full">
